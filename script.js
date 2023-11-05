@@ -68,11 +68,15 @@ function getCurrentOperandLength(){
     return  rightDisplayArea.textContent.includes(".")? rightDisplayArea.textContent.length-1 : rightDisplayArea.textContent.length;
 }
 
+function getLength(value)
+{
+    return  value.toString().includes(".")? value.toString().length-1 : value.toString().length;
+}
 
 function resetCalculator(){
     display("0");
     leftDisplayArea.textContent = "";
-    oldOperator = null;
+    previousOperator = null;
     newOperator = null;
     isOperationComplete = true;
     operand1 = 0;
@@ -120,8 +124,18 @@ function pressDecimal(){
 }
 
 function display(value){
-    // if(!isOperationComplete)
-    rightDisplayArea.textContent = value;
+    let valueSplit;
+    let availableDecimalPlace, multiplier;
+    if(getLength(value)<=maxDisplaySize)
+        rightDisplayArea.textContent = value;
+    else if(value.toString().includes(".")){
+        valueSplit = value.toString().split(".");
+        availableDecimalPlace = maxDisplaySize - valueSplit[0].length;
+        multiplier = 10 ** availableDecimalPlace;
+        value = Math.round((value + Number.EPSILON) * multiplier) / multiplier
+        rightDisplayArea.textContent = value;
+    }
+    
 
 }
 
@@ -134,7 +148,8 @@ function setOperator(newOperator){
      operand in this case*/
         isOperationComplete = false;
         isNewOperandRcvd = true;
-        display("0");
+        if(isNaN(rightDisplayArea.textContent) === true)
+            display("0");
     }
 
     if(previousOperator === null){
@@ -150,33 +165,41 @@ function setOperator(newOperator){
         switch(previousOperator){
             case "+":
                 operand1 = +(operand1) + +(operand2);
+                display(operand1);
                 break;
             case "-":
                 operand1 = +(operand1) - +(operand2);
+                display(operand1);
                 break;
             case "X":
                 operand1 = +(operand1) * +(operand2);
+                display(operand1);
                 break;
             case "/":
                 if(+operand2 === 0)
                     {
-                        rightDisplayArea.textContent = "Not today";
+                        display("Not today");
                         isOperationComplete = true;
                     }
-                else
+                else{
                     operand1 = +(operand1) / +(operand2);
+                    display(operand1);
+                }
                 break;
 
         }
         previousOperator = newOperator;
         isNewOperandRcvd = false;
         isOperandAvailable = true;
-        display(operand1);
 
+    }
+    else{
+        previousOperator = newOperator;
     }
     if(newOperator === "="){
         previousOperator = null;
         newOperator = "";
+        isOperationComplete = true;
     }
         
 }
