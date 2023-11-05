@@ -25,7 +25,7 @@ const nineButton = document.querySelector("#nine");
 const decimalButton = document.querySelector("#decimal");
 
 
-const maxDisplaySize = 10;
+const maxDisplaySize = 10; //set the max display size here
 
 let operand1 = 0;
 let operand2 = 0;
@@ -40,8 +40,10 @@ resetCalculator();
 acButton.addEventListener("click",() => {
     isOperationComplete = true;
     resetCalculator();});
+
 cButton.addEventListener("click", () => {
     (isOperationComplete) ? resetCalculator() : resetCalculatorRight();}) ;
+
 backButton.addEventListener("click",() => pressBack());
 
 addButton.addEventListener("click",() => setOperator("+"));
@@ -65,13 +67,77 @@ nineButton.addEventListener("click",() => pressNumber("9"));
 decimalButton.addEventListener("click",() => pressDecimal());
 
 
+//Keyboard mapping here
+document.body.addEventListener("keydown",function(event){
+
+
+    switch (event.key){
+        case "0":
+            zeroButton.click();
+            break;
+        case "1":
+            oneButton.click();
+            break;
+        case "2":
+            twoButton.click();
+            break;
+        case "3":
+            threeButton.click();
+            break;
+        case "4":
+            fourButton.click();
+            break;
+        case "5":
+            fiveButton.click();
+            break;
+        case "6":
+            sixButton.click();
+            break;
+        case "7":
+            sevenButton.click();
+            break;
+        case "8":
+            eightButton.click();
+            break;
+        case "9":
+            nineButton.click();
+            break;
+        case "Enter":
+            equalButton.click();
+            break;
+        case "+":
+            addButton.click();
+            break;
+        case "-":
+            subtractButton.click();
+            break;
+        case "*":
+            multiplyButton.click();
+            break;
+        case "/":
+            divideButton.click();
+            break;
+        case " ":
+            acButton.click();
+            break;        
+        case "Backspace":
+            backButton.click();
+            break;        
+        case ".":
+            decimalButton.click();
+            break;
+    }
+});
+
+
 function getCurrentOperandLength(){
-    return  rightDisplayArea.textContent.includes(".")? rightDisplayArea.textContent.length-1 : rightDisplayArea.textContent.length;
+    return  rightDisplayArea.textContent.includes(".")? rightDisplayArea.textContent.length-1 : rightDisplayArea.textContent.length; //this excludes decimal poin when calculating length of string
 }
 
 function getLength(value)
 {
     return  value.toString().includes(".")? value.toString().length-1 : value.toString().length;
+    //this excludes decimal poin when calculating length of string
 }
 
 function resetCalculator(){
@@ -91,11 +157,11 @@ function resetCalculatorRight(){
 }
 
 function pressNumber(number){
-    if(previousOperator === null)
+    if(previousOperator === null) //empties operator display for first insertion of operand 
         leftDisplayArea.textContent = "";
-    if(isOperationComplete)
+    if(isOperationComplete) //resets calculator when number pressed after previous operation is complete
         resetCalculator();
-    if (!isNewOperandRcvd){
+    if (!isNewOperandRcvd){ 
         rightDisplayArea.textContent = "";
         isNewOperandRcvd = true;
     }
@@ -120,8 +186,16 @@ function pressBack(){
 }
 
 function pressDecimal(){
-    if (!rightDisplayArea.textContent.includes("."))
+    if (!rightDisplayArea.textContent.includes(".")){
+        if(isNewOperandRcvd === false)
+            pressNumber("0");
         pressNumber(".");
+    }
+    else if(isNewOperandRcvd === false){
+        pressNumber("0");
+        pressNumber(".");
+        isNewOperandRcvd = true;
+    }
 }
 
 function display(value){
