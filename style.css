@@ -74,17 +74,27 @@ button .pressed-button{
 }
 
 .calc-display{
-    background-color: #a8f1c3;
+    background-color: #ccf1d9;
+    padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.calc-display-inner{
-    width: 100%;
+.calc-display-inner-right {
+    width: 90%;
     text-align: right;
-    font-size: 60px;
+    font-size: 54px;
     font-family: 'Quantico', Arial, Helvetica, sans-serif;
+    /* border: 1px solid black; */
+}
+
+.calc-display-inner-left{
+    width: 10%;
+    text-align: left;
+    font-size: 40px;
+    font-family: 'Quantico', Arial, Helvetica, sans-serif;
+    /* border: 1px solid black; */
 }
 
 .other-button{
@@ -94,6 +104,11 @@ button .pressed-button{
 
 .ac-button{
     background-color: #da3132;
+}
+
+.c-button{
+    background-color: #f4c4a0;
+    color: #da3132;
 }
 
 .operator-button{
@@ -123,6 +138,7 @@ button{
     font-size: 26px;
     font-weight: 800;
     color: antiquewhite;
+    border-radius: 5px;
 }
 
 .pressed-button{
