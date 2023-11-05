@@ -40,7 +40,8 @@ resetCalculator();
 acButton.addEventListener("click",() => {
     isOperationComplete = true;
     resetCalculator();});
-cButton.addEventListener("click", () => resetCalculatorRight());
+cButton.addEventListener("click", () => {
+    (isOperationComplete) ? resetCalculator() : resetCalculatorRight();}) ;
 backButton.addEventListener("click",() => pressBack());
 
 addButton.addEventListener("click",() => setOperator("+"));
@@ -130,12 +131,20 @@ function display(value){
         rightDisplayArea.textContent = value;
     else if(value.toString().includes(".")){
         valueSplit = value.toString().split(".");
+        if(valueSplit[0].length >= 10){
+            rightDisplayArea.textContent = "Huge Value!";
+            isOperationComplete = true;    
+        }
+
         availableDecimalPlace = maxDisplaySize - valueSplit[0].length;
         multiplier = 10 ** availableDecimalPlace;
         value = Math.round((value + Number.EPSILON) * multiplier) / multiplier
         rightDisplayArea.textContent = value;
     }
-    
+    else{
+        rightDisplayArea.textContent = "Huge Value!";
+        isOperationComplete = true;
+    }
 
 }
 
